@@ -25,12 +25,18 @@ Shopware's regular plugin installation flow.
 
 Pushes to `main` run the `Build Plugin Zip` GitHub Actions workflow. The
 workflow runs Docker QA, builds `dist/SwagAgenticResourceDiscovery.zip`, and
-uploads it as the `SwagAgenticResourceDiscovery` workflow artifact.
+publishes it in two places:
+
+- Latest main release: https://github.com/agentic-commerce-lab/agentic-resource-discovery-plugin/releases/tag/latest-main
+- Workflow artifact: https://github.com/agentic-commerce-lab/agentic-resource-discovery-plugin/actions/workflows/build-plugin-zip.yml
+
+The `latest-main` release is updated after every successful push build on
+`main`, so it is the easiest place to download the current installable zip.
 
 To install from CI:
 
-1. Open the latest successful `Build Plugin Zip` workflow run on `main`.
-2. Download the `SwagAgenticResourceDiscovery` artifact.
+1. Open the `latest-main` release.
+2. Download `SwagAgenticResourceDiscovery.zip` from the release assets.
 3. Upload/install `SwagAgenticResourceDiscovery.zip` through Shopware's plugin
    installation flow.
 

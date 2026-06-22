@@ -31,6 +31,8 @@ return [
         assert_true(false !== $readme, 'Expected README.md to be readable.');
         assert_true(str_contains($readme, '## Installation'), 'Expected installation section.');
         assert_true(str_contains($readme, '## Configuration Keys'), 'Expected configuration section.');
+        assert_true(str_contains($readme, 'releases/tag/latest-main'), 'Expected latest main release link.');
+        assert_true(str_contains($readme, 'actions/workflows/build-plugin-zip.yml'), 'Expected build workflow link.');
         assert_true(str_contains($readme, 'docs/manual-testing.md'), 'Expected manual testing link.');
         assert_true(str_contains($readme, 'docs/release-checklist.md'), 'Expected release checklist link.');
     },
@@ -43,5 +45,15 @@ return [
         assert_true(false !== $extension, 'Expected .shopware-extension.yml to be readable.');
         assert_true(str_contains($extension, 'shopwareVersionConstraint: ">=6.5.0 <6.8.0"'), 'Expected Shopware version constraint.');
         assert_true(str_contains($extension, 'composer:'), 'Expected Composer packaging config.');
+    },
+
+    'build workflow publishes latest main release asset' => static function (): void {
+        $workflow = file_get_contents(__DIR__.'/../../.github/workflows/build-plugin-zip.yml');
+
+        assert_true(false !== $workflow, 'Expected build workflow to be readable.');
+        assert_true(str_contains($workflow, 'contents: write'), 'Expected release publishing permission.');
+        assert_true(str_contains($workflow, 'gh release create latest-main'), 'Expected latest main release creation.');
+        assert_true(str_contains($workflow, 'gh release upload latest-main'), 'Expected latest main release asset upload.');
+        assert_true(str_contains($workflow, 'dist/SwagAgenticResourceDiscovery.zip'), 'Expected plugin zip asset.');
     },
 ];
