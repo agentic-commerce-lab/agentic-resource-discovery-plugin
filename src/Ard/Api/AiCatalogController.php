@@ -37,6 +37,8 @@ final class AiCatalogController
 
         $response = new JsonResponse($manifest->toArray(), Response::HTTP_OK);
         $response->headers->set('cache-control', 'public, max-age=300');
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
 
         return $response;
     }
