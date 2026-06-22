@@ -183,38 +183,38 @@
 
 **Outcome:** ARD clients can search the Shopware storefront resources through required and optional registry endpoints.
 
-- [ ] Implement `RegistryController` routes:
+- [x] Implement `RegistryController` routes:
   - `POST /ard/search`
   - `POST /ard/explore`
   - `GET /ard/agents`
-- [ ] Implement `ArdRequestValidator`:
+- [x] Implement `ArdRequestValidator`:
   - reject malformed JSON with `400 INVALID_ARGUMENT`.
   - require `query.text` for `/search`.
   - reject unsupported federation values outside `auto`, `referrals`, `none`.
   - clamp `pageSize` to max `100`.
-- [ ] Implement `FilterMatcher`:
+- [x] Implement `FilterMatcher`:
   - dot-path traversal.
   - array values match if any element matches.
   - values within one filter key are OR.
   - different filter keys are AND.
   - support at least `type`, `tags`, `capabilities`, `publisher`, `metadata.*`, and `trustManifest.attestations.type`.
-- [ ] Implement `TextMatcher`:
+- [x] Implement `TextMatcher`:
   - tokenize lowercase alphanumeric words.
   - score over `displayName`, `description`, `tags`, `capabilities`, and `representativeQueries`.
   - return integer `0-100`.
   - include all filtered entries with score `100` for empty text in explore/list flows.
-- [ ] Implement `RegistrySearchService`:
+- [x] Implement `RegistrySearchService`:
   - returns search `results` with `score` and `source`.
   - returns `referrals` only when request `federation` is `referrals` and referrals are configured.
   - implements simple offset page tokens as base64 JSON: `{"offset":10}`.
-- [ ] Implement `GET /ard/agents`:
+- [x] Implement `GET /ard/agents`:
   - accepts `pageSize` and `pageToken`.
   - accepts a minimal MVP `filter` syntax of comma-separated `key=value` pairs, for example `type=application/ai-registry+json,tags=shopware`.
   - returns `{ "items": [], "total": 0 }`.
-- [ ] Implement `POST /ard/explore`:
+- [x] Implement `POST /ard/explore`:
   - supports facets over the current matched set.
   - returns `resultType: "facets"`.
-- [ ] Add unit tests for:
+- [x] Add unit tests for:
   - invalid search request errors.
   - search text relevance.
   - filters on scalar, arrays, nested arrays, and derived publisher.
