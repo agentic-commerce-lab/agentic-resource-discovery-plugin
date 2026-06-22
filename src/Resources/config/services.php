@@ -14,11 +14,8 @@ use Swag\AgenticResourceDiscovery\Ard\Config\SystemConfigArdConfigProvider;
 use Swag\AgenticResourceDiscovery\Ard\Catalog\StaticConfigResourceProvider;
 use Swag\AgenticResourceDiscovery\Ard\Log\NullStaticEntryWarningLogger;
 use Swag\AgenticResourceDiscovery\Ard\Log\StaticEntryWarningLoggerInterface;
-<<<<<<< james/allow-all-cors-origin
 use Swag\AgenticResourceDiscovery\Subscriber\AiCatalogResponseSubscriber;
-=======
 use Shopware\Core\System\SystemConfig\SystemConfigService;
->>>>>>> main
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -44,15 +41,12 @@ return static function (ContainerConfigurator $container): void {
     $services->set(AgenticCommerceResourceProvider::class)
         ->tag('swag_agentic_resource_discovery.catalog_entry_provider');
 
-<<<<<<< james/allow-all-cors-origin
     $services
         ->set(AiCatalogResponseSubscriber::class)
         ->tag('kernel.event_subscriber');
 
     $services->alias(AgenticCommerceBridgeInterface::class, NullAgenticCommerceBridge::class);
-=======
     $services->alias(AgenticCommerceBridgeInterface::class, ShopwareAgenticCommerceBridge::class);
->>>>>>> main
 
     $services->set(ShopwareAgenticCommerceBridge::class)
         ->arg('$ucpConfigService', service('Swag\\AgenticCommerce\\Ucp\\Config\\UcpConfigService')->nullOnInvalid())
