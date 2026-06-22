@@ -13,6 +13,7 @@ mkdir "$WORK_DIR/$PLUGIN_NAME"
 
 cp composer.json "$WORK_DIR/$PLUGIN_NAME/"
 cp composer.lock "$WORK_DIR/$PLUGIN_NAME/"
+cp LICENSE "$WORK_DIR/$PLUGIN_NAME/"
 cp README.md "$WORK_DIR/$PLUGIN_NAME/"
 cp .shopware-extension.yml "$WORK_DIR/$PLUGIN_NAME/"
 cp -R src "$WORK_DIR/$PLUGIN_NAME/"

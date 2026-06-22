@@ -6,6 +6,17 @@ ARD lets clients discover agent-facing resources, registries, and protocol
 surfaces. It does not execute commerce actions itself. Commerce execution stays
 behind the advertised resource's native protocol, such as UCP or MCP.
 
+In Agentic Commerce, buyers increasingly delegate shopping, comparison,
+procurement, replenishment, and checkout tasks to AI agents. Those agents need a
+reliable way to understand which commerce capabilities a storefront exposes,
+where to find them, and which protocol should be used to interact with them.
+This plugin helps a Shopware storefront publish that discovery layer while
+keeping the actual commerce operations inside the systems and protocols the
+merchant controls.
+
+For more background on ARD, see Google's announcement:
+https://developers.googleblog.com/announcing-the-agentic-resource-discovery-specification/
+
 ## Installation
 
 Install this repository as a Shopware platform plugin:
@@ -61,7 +72,7 @@ At runtime the plugin reads these values from Shopware's `SystemConfigService`.
 When a sales-channel context is available, sales-channel scoped plugin settings
 are used first and global plugin settings are used as fallback.
 
-## Current MVP State
+## Current State
 
 The plugin currently provides the static ARD catalog building blocks for
 `/.well-known/ai-catalog.json`:
@@ -76,7 +87,7 @@ The catalog controller uses Symfony `JsonResponse` / `Response` and Symfony
 routing attributes. The Docker QA environment installs the Symfony runtime
 packages needed for those tests through Composer.
 
-The MVP registry endpoints are also implemented:
+The registry endpoints are also implemented:
 
 - `POST /ard/search`
 - `POST /ard/explore`
@@ -85,7 +96,7 @@ The MVP registry endpoints are also implemented:
 `/ard/search` validates JSON request bodies, requires `query.text`, clamps
 `pageSize` to `100`, supports `federation` values `auto`, `referrals`, and
 `none`, and returns catalog entries with ARD `score` and `source` fields.
-Search uses deterministic lexical matching for the MVP.
+Search uses deterministic lexical matching.
 
 `/ard/agents` supports deterministic listing with `pageSize`, `pageToken`, and
 a simple comma-separated filter syntax such as:
@@ -118,27 +129,8 @@ then call the registry-relative endpoints under `/ard`.
 Relevant ARD references:
 
 - Main ARD spec: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md
-- Capability manifest: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#41-the-capability-manifest-ai-catalogjson
-- Catalog entry object: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#42-catalog-entry-object
-- Query model and filter semantics: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#71-the-query-model
-- Search endpoint: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#72-search-post-search
-- Explore endpoint: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#73-explore-post-explore--optional
-- List endpoint: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#74-list-get-agents--optional
-- Federation modes: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#8-federation
-- OpenAPI schema: https://github.com/ards-project/ard-spec/blob/main/spec/schemas/ard.openapi.yaml
-- `ai-catalog` JSON Schema: https://github.com/ards-project/ard-spec/blob/main/spec/schemas/ai-catalog.schema.json
+- Google ARD announcement: https://developers.googleblog.com/announcing-the-agentic-resource-discovery-specification/
 - Conformance tool: https://github.com/ards-project/ard-spec/tree/main/conformance
-
-MVP limitations:
-
-- Search scoring is lexical and deterministic, not embedding-based semantic
-  ranking.
-- `federation: auto` searches local entries only.
-- `federation: referrals` can return referrals configured through
-  `referralsJson`.
-- `GET /ard/agents` supports a simple comma-separated `key=value` filter syntax,
-  not the full optional EBNF-style list filter.
-- Official ARD conformance tests are planned for the conformance epic.
 
 ## Static Catalog Entries
 
@@ -325,3 +317,18 @@ Manual runtime checks are documented in
 
 Release gates are documented in
 [docs/release-checklist.md](docs/release-checklist.md).
+
+## Contributing and Feedback
+
+ARD is an emerging discovery layer for agent-facing resources, and this plugin
+is intended to evolve with feedback from developers, merchants, partners, and
+researchers working on agentic commerce.
+
+If you are integrating Shopware with AI agents, experimenting with ARD, or
+testing this plugin against your own storefront, please open an issue or
+discussion with questions, implementation feedback, interoperability findings,
+or suggestions for what the plugin should support next.
+
+## License
+
+MIT
