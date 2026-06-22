@@ -194,3 +194,33 @@ Composer dependencies are installed into `.tools/vendor`, which is ignored by
 git. The lockfile is resolved with Composer platform PHP `8.1.0` so dependency
 selection matches the plugin's declared PHP support even when Docker runs a
 newer PHP CLI image.
+
+## ARD Conformance
+
+The Docker QA image includes `python3` so it can run the official ARD
+conformance CLI once the spec repository is available locally.
+
+Clone or vendor the ARD spec repository into `tools/ard-spec`:
+
+```bash
+git clone https://github.com/ards-project/ard-spec.git tools/ard-spec
+```
+
+Run conformance checks against a live Shopware base URL:
+
+```bash
+docker compose run --rm qa bin/ard-conformance.sh https://example.com
+```
+
+The helper validates:
+
+- `https://example.com/.well-known/ai-catalog.json`
+- `https://example.com/ard`
+
+The target URL must be a running Shopware storefront with this plugin installed
+and active. Local unit tests do not replace this live conformance pass.
+
+GitHub Actions runs the same conformance helper when the repository variable
+`ARD_CONFORMANCE_BASE_URL` is set. Configure it to the public base URL of a live
+Shopware test storefront with this plugin installed. If the variable is not set,
+the workflow still runs Docker QA and skips live conformance.

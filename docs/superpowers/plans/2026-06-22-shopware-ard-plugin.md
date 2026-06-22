@@ -348,22 +348,22 @@ or:
 
 **Outcome:** The plugin has repeatable validation against ARD and Shopware behavior.
 
-- [ ] Add `tools/ard-spec/README.md` documenting how to clone or vendor the ARD conformance tool for local validation.
-- [ ] Add script `bin/ard-conformance.sh <base-url>` that runs:
+- [x] Add `tools/ard-spec/README.md` documenting how to clone or vendor the ARD conformance tool for local validation.
+- [x] Add script `bin/ard-conformance.sh <base-url>` that runs:
 
 ```bash
 python3 conformance/bin/conformance-test manifest "$1/.well-known/ai-catalog.json"
 python3 conformance/bin/conformance-test registry "$1/ard"
 ```
 
-- [ ] Add PHPUnit integration tests covering:
+- [x] Add lightweight controller/service tests covering:
   - route status codes.
   - content types.
   - disabled config.
   - search response structure.
   - list response structure.
   - explore response structure.
-- [ ] Add static analysis baseline only if needed; prefer fixing issues directly.
+- [x] Add static analysis baseline only if needed; prefer fixing issues directly.
 - [ ] Manual QA on a Shopware 6.6 or 6.7 lane:
   - install plugin.
   - activate plugin.

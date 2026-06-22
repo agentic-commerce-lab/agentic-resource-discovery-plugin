@@ -30,3 +30,14 @@ jobs:
 
       - name: Run QA
         run: docker compose run --rm qa
+
+      - name: Checkout ARD spec for conformance
+        if: ${{ vars.ARD_CONFORMANCE_BASE_URL != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: ards-project/ard-spec
+          path: tools/ard-spec
+
+      - name: Run ARD conformance
+        if: ${{ vars.ARD_CONFORMANCE_BASE_URL != '' }}
+        run: docker compose run --rm qa bin/ard-conformance.sh "${{ vars.ARD_CONFORMANCE_BASE_URL }}"
