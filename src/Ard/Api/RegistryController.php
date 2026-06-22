@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Swag\AgenticResourceDiscovery\Ard\Api;
 
+use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Swag\AgenticResourceDiscovery\Ard\Catalog\AiCatalogBuilder;
 use Swag\AgenticResourceDiscovery\Ard\Config\ArdConfig;
 use Swag\AgenticResourceDiscovery\Ard\Config\ArdConfigProviderInterface;
@@ -31,7 +32,7 @@ final class RegistryController
         defaults: ['_routeScope' => ['storefront'], 'auth_required' => false],
         methods: ['POST'],
     )]
-    public function search(Request $request, mixed $salesChannelContext = null): Response
+    public function search(Request $request, ?SalesChannelContext $salesChannelContext = null): Response
     {
         $config = $this->configProvider->getConfig($salesChannelContext);
         if (!$config->enabled) {
@@ -60,7 +61,7 @@ final class RegistryController
         defaults: ['_routeScope' => ['storefront'], 'auth_required' => false],
         methods: ['POST'],
     )]
-    public function explore(Request $request, mixed $salesChannelContext = null): Response
+    public function explore(Request $request, ?SalesChannelContext $salesChannelContext = null): Response
     {
         $config = $this->configProvider->getConfig($salesChannelContext);
         if (!$config->enabled) {
@@ -85,7 +86,7 @@ final class RegistryController
         defaults: ['_routeScope' => ['storefront'], 'auth_required' => false],
         methods: ['GET'],
     )]
-    public function agents(Request $request, mixed $salesChannelContext = null): Response
+    public function agents(Request $request, ?SalesChannelContext $salesChannelContext = null): Response
     {
         $config = $this->configProvider->getConfig($salesChannelContext);
         if (!$config->enabled) {

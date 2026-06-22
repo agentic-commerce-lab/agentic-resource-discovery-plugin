@@ -54,6 +54,8 @@ return [
         $controller = file_get_contents(__DIR__.'/../../src/Ard/Api/AiCatalogController.php');
 
         assert_true(false !== $controller, 'Expected controller source to be readable.');
+        assert_true(str_contains($controller, 'use Shopware\Core\System\SalesChannel\SalesChannelContext;'), 'Expected sales channel context import.');
+        assert_true(str_contains($controller, '?SalesChannelContext $salesChannelContext = null'), 'Expected nullable sales channel context action argument.');
         assert_true(str_contains($controller, "'_routeScope' => ['storefront']"), 'Expected storefront route scope.');
         assert_true(str_contains($controller, "'auth_required' => false"), 'Expected public route.');
     },

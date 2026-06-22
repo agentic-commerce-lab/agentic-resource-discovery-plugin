@@ -227,7 +227,7 @@
 
 - [x] Implement `StaticConfigResourceProvider`.
 - [x] Read `staticEntriesJson` from the active `ArdConfig`.
-- [ ] Add the Shopware `SystemConfigService` adapter that hydrates `ArdConfig::staticEntriesJson` from plugin system config.
+- [x] Add the Shopware `SystemConfigService` adapter that hydrates `ArdConfig::staticEntriesJson` from plugin system config.
 - [x] Accept either:
 
 ```json

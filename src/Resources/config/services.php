@@ -9,12 +9,12 @@ use Swag\AgenticResourceDiscovery\Ard\Catalog\AgenticCommerceResourceProvider;
 use Swag\AgenticResourceDiscovery\Ard\Catalog\AiCatalogBuilder;
 use Swag\AgenticResourceDiscovery\Ard\Api\AiCatalogController;
 use Swag\AgenticResourceDiscovery\Ard\Api\RegistryController;
-use Swag\AgenticResourceDiscovery\Ard\Config\ArdConfig;
 use Swag\AgenticResourceDiscovery\Ard\Config\ArdConfigProviderInterface;
-use Swag\AgenticResourceDiscovery\Ard\Config\InMemoryArdConfigProvider;
+use Swag\AgenticResourceDiscovery\Ard\Config\SystemConfigArdConfigProvider;
 use Swag\AgenticResourceDiscovery\Ard\Catalog\StaticConfigResourceProvider;
 use Swag\AgenticResourceDiscovery\Ard\Log\NullStaticEntryWarningLogger;
 use Swag\AgenticResourceDiscovery\Ard\Log\StaticEntryWarningLoggerInterface;
+use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -44,15 +44,10 @@ return static function (ContainerConfigurator $container): void {
 
     $services->alias(StaticEntryWarningLoggerInterface::class, NullStaticEntryWarningLogger::class);
 
-    $services->set(ArdConfig::class)
-        ->arg('$enabled', true)
-        ->arg('$hostDisplayName', 'Shopware Agentic Resource Discovery')
-        ->arg('$staticEntriesJson', null);
+    $services->alias(ArdConfigProviderInterface::class, SystemConfigArdConfigProvider::class);
 
-    $services->alias(ArdConfigProviderInterface::class, InMemoryArdConfigProvider::class);
-
-    $services->set(InMemoryArdConfigProvider::class)
-        ->arg('$config', service(ArdConfig::class));
+    $services->set(SystemConfigArdConfigProvider::class)
+        ->arg('$systemConfigService', service(SystemConfigService::class));
 
     $services->set(AiCatalogBuilder::class)
         ->arg('$entryProviders', tagged_iterator('swag_agentic_resource_discovery.catalog_entry_provider'));

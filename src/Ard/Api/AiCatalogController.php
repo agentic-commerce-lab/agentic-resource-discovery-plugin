@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Swag\AgenticResourceDiscovery\Ard\Api;
 
+use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Swag\AgenticResourceDiscovery\Ard\Catalog\AiCatalogBuilder;
 use Swag\AgenticResourceDiscovery\Ard\Config\ArdConfigProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +26,7 @@ final class AiCatalogController
         defaults: ['_routeScope' => ['storefront'], 'auth_required' => false],
         methods: ['GET'],
     )]
-    public function catalog(Request $request, mixed $salesChannelContext = null): Response
+    public function catalog(Request $request, ?SalesChannelContext $salesChannelContext = null): Response
     {
         $config = $this->configProvider->getConfig($salesChannelContext);
 

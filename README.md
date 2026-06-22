@@ -50,10 +50,11 @@ The plugin configuration currently defines these keys:
 | `hostDisplayName` | Human-readable host name in `ai-catalog.json`. | `Shopware Agentic Resource Discovery` |
 | `documentationUrl` | Optional host documentation URL in `ai-catalog.json`. | empty |
 | `staticEntriesJson` | Optional JSON for additional static catalog entries. | empty |
-| `referralsJson` | Optional JSON for future registry referrals. | empty |
+| `referralsJson` | Optional JSON for registry referrals returned by federated search. | empty |
 
-The current Docker-tested config provider is in-memory. A Shopware
-`SystemConfigService` adapter is still pending.
+At runtime the plugin reads these values from Shopware's `SystemConfigService`.
+When a sales-channel context is available, sales-channel scoped plugin settings
+are used first and global plugin settings are used as fallback.
 
 ## Current MVP State
 
@@ -128,8 +129,8 @@ MVP limitations:
 - Search scoring is lexical and deterministic, not embedding-based semantic
   ranking.
 - `federation: auto` searches local entries only.
-- `federation: referrals` can return configured referrals, but config-backed
-  referrals are planned for a later epic.
+- `federation: referrals` can return referrals configured through
+  `referralsJson`.
 - `GET /ard/agents` supports a simple comma-separated `key=value` filter syntax,
   not the full optional EBNF-style list filter.
 - Official ARD conformance tests are planned for the conformance epic.
@@ -138,8 +139,8 @@ MVP limitations:
 
 Static entries let a merchant or implementation engineer publish additional ARD
 resources without writing a new catalog provider. The current provider reads
-`staticEntriesJson` from the active `ArdConfig`; wiring that value to Shopware's
-`SystemConfigService` is still pending.
+`staticEntriesJson` from Shopware plugin configuration, with sales-channel
+overrides applied when the request has a sales-channel context.
 
 Accepted JSON shape: an array of entries:
 
@@ -186,6 +187,36 @@ Validation rules:
 Invalid static entries are omitted from the public catalog. The provider records
 a warning with the invalid entry index and continues rendering the remaining
 valid entries.
+
+## Registry Referrals
+
+`referralsJson` configures referral registries returned by `POST /ard/search`
+when the request uses `"federation": "referrals"`. It accepts either a JSON
+array:
+
+```json
+[
+  {
+    "url": "https://registry.example.com/ard",
+    "displayName": "Partner Registry"
+  }
+]
+```
+
+or an object with a `referrals` array:
+
+```json
+{
+  "referrals": [
+    {
+      "url": "https://registry.example.com/ard",
+      "displayName": "Partner Registry"
+    }
+  ]
+}
+```
+
+Invalid referral JSON is ignored and the endpoint continues with local results.
 
 ## Agentic Commerce Bridge
 
