@@ -27,4 +27,12 @@ return [
         assert_true(str_contains($workflow, 'repository: ards-project/ard-spec'), 'Expected workflow to checkout ARD spec.');
         assert_true(str_contains($workflow, 'bin/ard-conformance.sh "${{ vars.ARD_CONFORMANCE_BASE_URL }}"'), 'Expected workflow to run conformance helper.');
     },
+
+    'docker qa installs composer dependencies before running checks' => static function (): void {
+        $compose = file_get_contents(__DIR__.'/../../docker-compose.yml');
+
+        assert_true(false !== $compose, 'Expected docker-compose.yml to be readable.');
+        assert_true(str_contains($compose, 'composer install --no-interaction --no-progress && composer qa'), 'Expected QA service to install Composer dependencies.');
+        assert_true(str_contains($compose, 'composer install --no-interaction --no-progress && composer test'), 'Expected test service to install Composer dependencies.');
+    },
 ];

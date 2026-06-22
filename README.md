@@ -242,6 +242,8 @@ docker compose run --rm --profile dev shell
 ```
 
 The `qa` command runs PHP syntax linting and the unit test harness through Composer scripts.
+The Docker Compose `qa` and `test` services run `composer install` first, so a
+fresh checkout does not need a pre-existing `.tools/vendor` directory.
 
 Composer dependencies are installed into `.tools/vendor`, which is ignored by
 git. The lockfile is resolved with Composer platform PHP `8.1.0` so dependency
