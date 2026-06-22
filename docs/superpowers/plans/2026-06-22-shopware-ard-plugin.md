@@ -382,16 +382,16 @@ python3 conformance/bin/conformance-test registry "$1/ard"
 
 **Outcome:** The MVP is installable and understandable by a Shopware developer or merchant.
 
-- [ ] Write `README.md` with:
+- [x] Write `README.md` with:
   - what ARD is and is not.
   - endpoint list.
   - minimal install instructions.
   - configuration keys.
   - Agentic Commerce bridge behavior.
   - conformance commands.
-- [ ] Write `docs/manual-testing.md` with exact browser/curl steps.
-- [ ] Add `.shopware-extension.yml` if packaging through Shopware extension tooling is required.
-- [ ] Add a release checklist:
+- [x] Write `docs/manual-testing.md` with exact browser/curl steps.
+- [x] Add `.shopware-extension.yml` if packaging through Shopware extension tooling is required.
+- [x] Add a release checklist:
   - `composer ci`
   - Shopware lane install test
   - ARD conformance manifest test

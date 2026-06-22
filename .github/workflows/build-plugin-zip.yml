@@ -1,0 +1,38 @@
+name: Build Plugin Zip
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-plugin-zip-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-plugin-zip:
+    name: Build Plugin Zip
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run QA
+        run: docker compose run --rm qa
+
+      - name: Build zip
+        run: docker compose run --rm qa bin/build-zip.sh
+
+      - name: Upload plugin zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: SwagAgenticResourceDiscovery
+          path: dist/SwagAgenticResourceDiscovery.zip
+          if-no-files-found: error
+          retention-days: 14

@@ -2,6 +2,59 @@
 
 This repository contains a Shopware 6 plugin for Agentic Resource Discovery (ARD).
 
+ARD lets clients discover agent-facing resources, registries, and protocol
+surfaces. It does not execute commerce actions itself. Commerce execution stays
+behind the advertised resource's native protocol, such as UCP or MCP.
+
+## Installation
+
+Install this repository as a Shopware platform plugin:
+
+```bash
+mkdir -p custom/plugins
+git clone <repository-url> custom/plugins/SwagAgenticResourceDiscovery
+bin/console plugin:refresh
+bin/console plugin:install --activate SwagAgenticResourceDiscovery
+bin/console cache:clear
+```
+
+For package installs, build or download the extension zip, then install it with
+Shopware's regular plugin installation flow.
+
+## Downloadable Plugin Zip
+
+Pushes to `main` run the `Build Plugin Zip` GitHub Actions workflow. The
+workflow runs Docker QA, builds `dist/SwagAgenticResourceDiscovery.zip`, and
+uploads it as the `SwagAgenticResourceDiscovery` workflow artifact.
+
+To install from CI:
+
+1. Open the latest successful `Build Plugin Zip` workflow run on `main`.
+2. Download the `SwagAgenticResourceDiscovery` artifact.
+3. Upload/install `SwagAgenticResourceDiscovery.zip` through Shopware's plugin
+   installation flow.
+
+Build the same zip locally:
+
+```bash
+docker compose run --rm qa bin/build-zip.sh
+```
+
+## Configuration Keys
+
+The plugin configuration currently defines these keys:
+
+| Key | Purpose | Default |
+| --- | --- | --- |
+| `enabled` | Enables public ARD endpoints. Disabled endpoints return HTTP `404`. | `true` |
+| `hostDisplayName` | Human-readable host name in `ai-catalog.json`. | `Shopware Agentic Resource Discovery` |
+| `documentationUrl` | Optional host documentation URL in `ai-catalog.json`. | empty |
+| `staticEntriesJson` | Optional JSON for additional static catalog entries. | empty |
+| `referralsJson` | Optional JSON for future registry referrals. | empty |
+
+The current Docker-tested config provider is in-memory. A Shopware
+`SystemConfigService` adapter is still pending.
+
 ## Current MVP State
 
 The plugin currently provides the static ARD catalog building blocks for
@@ -224,3 +277,11 @@ GitHub Actions runs the same conformance helper when the repository variable
 `ARD_CONFORMANCE_BASE_URL` is set. Configure it to the public base URL of a live
 Shopware test storefront with this plugin installed. If the variable is not set,
 the workflow still runs Docker QA and skips live conformance.
+
+## Manual Testing and Release
+
+Manual runtime checks are documented in
+[docs/manual-testing.md](docs/manual-testing.md).
+
+Release gates are documented in
+[docs/release-checklist.md](docs/release-checklist.md).

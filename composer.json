@@ -24,7 +24,8 @@
         "qa": [
             "@lint",
             "@test"
-        ]
+        ],
+        "ci": "@qa"
     },
     "extra": {
         "shopware-plugin-class": "Swag\\AgenticResourceDiscovery\\SwagAgenticResourceDiscovery",
