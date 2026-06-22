@@ -1,0 +1,45 @@
+{
+    "name": "shopware/agentic-resource-discovery",
+    "description": "Shopware plugin for Agentic Resource Discovery endpoints",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Swag\\AgenticResourceDiscovery\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Swag\\AgenticResourceDiscovery\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "php bin/test",
+        "lint": "php bin/lint",
+        "qa": [
+            "@lint",
+            "@test"
+        ]
+    },
+    "extra": {
+        "shopware-plugin-class": "Swag\\AgenticResourceDiscovery\\SwagAgenticResourceDiscovery",
+        "label": {
+            "de-DE": "Agentic Resource Discovery",
+            "en-GB": "Agentic Resource Discovery"
+        },
+        "description": {
+            "de-DE": "ARD Discovery-Endpunkte fuer Shopware",
+            "en-GB": "ARD discovery endpoints for Shopware"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "vendor-dir": ".tools/vendor",
+        "allow-plugins": {}
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

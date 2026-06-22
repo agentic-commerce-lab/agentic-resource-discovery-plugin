@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/trunk/src/Core/System/SystemConfig/Schema/config.xsd">
+    <card>
+        <title>Agentic Resource Discovery</title>
+        <title lang="de-DE">Agentic Resource Discovery</title>
+
+        <input-field type="bool">
+            <name>enabled</name>
+            <label>Enable ARD endpoints</label>
+            <label lang="de-DE">ARD-Endpunkte aktivieren</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="text">
+            <name>hostDisplayName</name>
+            <label>Host display name</label>
+            <label lang="de-DE">Anzeigename des Hosts</label>
+            <defaultValue>Shopware Agentic Resource Discovery</defaultValue>
+        </input-field>
+
+        <input-field type="url">
+            <name>documentationUrl</name>
+            <label>Documentation URL</label>
+            <label lang="de-DE">Dokumentations-URL</label>
+        </input-field>
+
+        <input-field type="textarea">
+            <name>staticEntriesJson</name>
+            <label>Static entries JSON</label>
+            <label lang="de-DE">Statische Eintraege als JSON</label>
+        </input-field>
+
+        <input-field type="textarea">
+            <name>referralsJson</name>
+            <label>Registry referrals JSON</label>
+            <label lang="de-DE">Registry-Verweise als JSON</label>
+        </input-field>
+    </card>
+</config>

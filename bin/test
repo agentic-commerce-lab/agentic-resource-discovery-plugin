@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__.'/../tests/bootstrap.php';
+
+$testFiles = glob(__DIR__.'/../tests/Unit/*Test.php') ?: [];
+$failures = 0;
+$count = 0;
+
+foreach ($testFiles as $file) {
+    $tests = require $file;
+    foreach ($tests as $name => $test) {
+        ++$count;
+
+        try {
+            $test();
+            fwrite(STDOUT, '.');
+        } catch (Throwable $exception) {
+            ++$failures;
+            fwrite(STDOUT, "F\n{$name}: {$exception->getMessage()}\n");
+        }
+    }
+}
+
+fwrite(STDOUT, sprintf("\n%d tests, %d failures\n", $count, $failures));
+
+exit($failures > 0 ? 1 : 0);
