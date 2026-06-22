@@ -101,6 +101,8 @@ return [
         $controller = file_get_contents(__DIR__.'/../../src/Ard/Api/RegistryController.php');
 
         assert_true(false !== $controller, 'Expected controller source to be readable.');
+        assert_true(str_contains($controller, 'use Shopware\Core\System\SalesChannel\SalesChannelContext;'), 'Expected sales channel context import.');
+        assert_same(3, substr_count($controller, '?SalesChannelContext $salesChannelContext = null'));
         assert_same(3, substr_count($controller, "'_routeScope' => ['storefront']"));
         assert_same(3, substr_count($controller, "'auth_required' => false"));
     },

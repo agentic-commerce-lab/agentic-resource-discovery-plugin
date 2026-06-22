@@ -2,9 +2,19 @@
 
 This repository contains a Shopware 6 plugin for Agentic Resource Discovery (ARD).
 
-ARD lets clients discover agent-facing resources, registries, and protocol
-surfaces. It does not execute commerce actions itself. Commerce execution stays
-behind the advertised resource's native protocol, such as UCP or MCP.
+ARD is a new discovery standard that lets AI Agents discover agent-facing resources, registries, and protocol
+surfaces a website exposes. 
+
+In Agentic Commerce, buyers increasingly delegate shopping, comparison,
+procurement, replenishment, and checkout tasks to AI agents. Those agents need a
+reliable way to understand which commerce capabilities a storefront exposes,
+where to find them, and which protocol should be used to interact with them.
+This plugin helps a Shopware storefront publish that discovery layer while
+keeping the actual commerce operations inside the systems and protocols the
+merchant controls.
+
+For more background on ARD, see Google's announcement:
+https://developers.googleblog.com/announcing-the-agentic-resource-discovery-specification/
 
 ## Installation
 
@@ -25,12 +35,17 @@ Shopware's regular plugin installation flow.
 
 Pushes to `main` run the `Build Plugin Zip` GitHub Actions workflow. The
 workflow runs Docker QA, builds `dist/SwagAgenticResourceDiscovery.zip`, and
-uploads it as the `SwagAgenticResourceDiscovery` workflow artifact.
+publishes it to the latest main release:
+
+https://github.com/agentic-commerce-lab/agentic-resource-discovery-plugin/releases/tag/latest-main
+
+The `latest-main` release is updated after every successful push build on
+`main`, so it is the easiest place to download the current installable zip.
 
 To install from CI:
 
-1. Open the latest successful `Build Plugin Zip` workflow run on `main`.
-2. Download the `SwagAgenticResourceDiscovery` artifact.
+1. Open the `latest-main` release.
+2. Download `SwagAgenticResourceDiscovery.zip` from the release assets.
 3. Upload/install `SwagAgenticResourceDiscovery.zip` through Shopware's plugin
    installation flow.
 
@@ -39,6 +54,42 @@ Build the same zip locally:
 ```bash
 docker compose run --rm qa bin/build-zip.sh
 ```
+
+## Instructions
+
+After installation, enable the plugin in Shopware Admin and configure it under
+the plugin settings. For most shops the defaults are enough to publish a basic
+ARD catalog.
+
+Open `https://shop.example/.well-known/ai-catalog.json` in a browser, replacing
+`shop.example` with your storefront domain. This is the public entry point for
+AI agents. It advertises the Shopware ARD registry and the resources agents can
+discover for the storefront.
+
+To add your own resources, paste JSON into the `staticEntriesJson` plugin
+configuration field. Use this when you want ARD to advertise an OpenAPI file,
+MCP server card, documentation endpoint, or another agent-facing resource that
+is not provided by this plugin automatically.
+
+To use this plugin with `shopware/agentic-commerce`:
+
+1. Install and activate both plugins.
+2. Configure Agentic Commerce UCP for the storefront sales channel.
+3. Enable UCP in the Agentic Commerce configuration.
+4. Clear the Shopware cache.
+5. Open `/.well-known/ai-catalog.json` on the same storefront domain.
+
+When Agentic Commerce UCP is active, the ARD catalog should include additional
+entries such as `Shopware UCP Profile`, `Shopware Agentic Discovery Guide`, and
+`Shopware LLM Instructions`. If Agentic Commerce MCP is enabled and the
+Shopware runtime supports Store API MCP, the catalog also includes
+`Shopware UCP MCP`.
+
+If those entries do not appear, confirm that both plugins are active, UCP is
+enabled for the same sales channel, and you are opening the catalog on the same
+storefront domain where Agentic Commerce is configured. The ARD plugin only
+advertises Agentic Commerce resources when Agentic Commerce itself is active for
+that storefront.
 
 ## Configuration Keys
 
@@ -50,12 +101,13 @@ The plugin configuration currently defines these keys:
 | `hostDisplayName` | Human-readable host name in `ai-catalog.json`. | `Shopware Agentic Resource Discovery` |
 | `documentationUrl` | Optional host documentation URL in `ai-catalog.json`. | empty |
 | `staticEntriesJson` | Optional JSON for additional static catalog entries. | empty |
-| `referralsJson` | Optional JSON for future registry referrals. | empty |
+| `referralsJson` | Optional JSON for registry referrals returned by federated search. | empty |
 
-The current Docker-tested config provider is in-memory. A Shopware
-`SystemConfigService` adapter is still pending.
+At runtime the plugin reads these values from Shopware's `SystemConfigService`.
+When a sales-channel context is available, sales-channel scoped plugin settings
+are used first and global plugin settings are used as fallback.
 
-## Current MVP State
+## Current State
 
 The plugin currently provides the static ARD catalog building blocks for
 `/.well-known/ai-catalog.json`:
@@ -70,7 +122,7 @@ The catalog controller uses Symfony `JsonResponse` / `Response` and Symfony
 routing attributes. The Docker QA environment installs the Symfony runtime
 packages needed for those tests through Composer.
 
-The MVP registry endpoints are also implemented:
+The registry endpoints are also implemented:
 
 - `POST /ard/search`
 - `POST /ard/explore`
@@ -79,7 +131,7 @@ The MVP registry endpoints are also implemented:
 `/ard/search` validates JSON request bodies, requires `query.text`, clamps
 `pageSize` to `100`, supports `federation` values `auto`, `referrals`, and
 `none`, and returns catalog entries with ARD `score` and `source` fields.
-Search uses deterministic lexical matching for the MVP.
+Search uses deterministic lexical matching.
 
 `/ard/agents` supports deterministic listing with `pageSize`, `pageToken`, and
 a simple comma-separated filter syntax such as:
@@ -112,34 +164,15 @@ then call the registry-relative endpoints under `/ard`.
 Relevant ARD references:
 
 - Main ARD spec: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md
-- Capability manifest: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#41-the-capability-manifest-ai-catalogjson
-- Catalog entry object: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#42-catalog-entry-object
-- Query model and filter semantics: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#71-the-query-model
-- Search endpoint: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#72-search-post-search
-- Explore endpoint: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#73-explore-post-explore--optional
-- List endpoint: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#74-list-get-agents--optional
-- Federation modes: https://github.com/ards-project/ard-spec/blob/main/spec/ard.md#8-federation
-- OpenAPI schema: https://github.com/ards-project/ard-spec/blob/main/spec/schemas/ard.openapi.yaml
-- `ai-catalog` JSON Schema: https://github.com/ards-project/ard-spec/blob/main/spec/schemas/ai-catalog.schema.json
+- Google ARD announcement: https://developers.googleblog.com/announcing-the-agentic-resource-discovery-specification/
 - Conformance tool: https://github.com/ards-project/ard-spec/tree/main/conformance
-
-MVP limitations:
-
-- Search scoring is lexical and deterministic, not embedding-based semantic
-  ranking.
-- `federation: auto` searches local entries only.
-- `federation: referrals` can return configured referrals, but config-backed
-  referrals are planned for a later epic.
-- `GET /ard/agents` supports a simple comma-separated `key=value` filter syntax,
-  not the full optional EBNF-style list filter.
-- Official ARD conformance tests are planned for the conformance epic.
 
 ## Static Catalog Entries
 
 Static entries let a merchant or implementation engineer publish additional ARD
 resources without writing a new catalog provider. The current provider reads
-`staticEntriesJson` from the active `ArdConfig`; wiring that value to Shopware's
-`SystemConfigService` is still pending.
+`staticEntriesJson` from Shopware plugin configuration, with sales-channel
+overrides applied when the request has a sales-channel context.
 
 Accepted JSON shape: an array of entries:
 
@@ -187,6 +220,36 @@ Invalid static entries are omitted from the public catalog. The provider records
 a warning with the invalid entry index and continues rendering the remaining
 valid entries.
 
+## Registry Referrals
+
+`referralsJson` configures referral registries returned by `POST /ard/search`
+when the request uses `"federation": "referrals"`. It accepts either a JSON
+array:
+
+```json
+[
+  {
+    "url": "https://registry.example.com/ard",
+    "displayName": "Partner Registry"
+  }
+]
+```
+
+or an object with a `referrals` array:
+
+```json
+{
+  "referrals": [
+    {
+      "url": "https://registry.example.com/ard",
+      "displayName": "Partner Registry"
+    }
+  ]
+}
+```
+
+Invalid referral JSON is ignored and the endpoint continues with local results.
+
 ## Agentic Commerce Bridge
 
 The plugin has a soft bridge for `shopware/agentic-commerce`. The ARD catalog
@@ -195,14 +258,16 @@ does not require the Agentic Commerce plugin at compile time.
 
 Current behavior:
 
-- When Agentic Commerce is absent, a null bridge returns no Agentic Commerce
-  entries and the ARD plugin still boots.
-- When a bridge reports UCP active, the catalog advertises
+- When Agentic Commerce is absent, optional service references resolve to
+  `null`, no Agentic Commerce entries are emitted, and the ARD plugin still
+  boots.
+- When Agentic Commerce is installed and UCP is active for the current sales
+  channel, the catalog advertises
   `/.well-known/ucp` as a `Shopware UCP Profile` entry.
-- When a bridge reports MCP available, the catalog advertises `/ucp/mcp` as a
-  `Shopware UCP MCP` entry.
-- When a bridge reports native discovery routes available, the catalog
-  advertises `/agents.md` and `/llms.txt`.
+- When Agentic Commerce config enables MCP and the Shopware runtime supports
+  Store API MCP, the catalog advertises `/ucp/mcp` as a `Shopware UCP MCP`
+  entry.
+- When UCP is active, the catalog advertises `/agents.md` and `/llms.txt`.
 - When UCP is inactive, no Agentic Commerce UCP/MCP/native discovery entries are
   advertised.
 
@@ -217,9 +282,9 @@ Those descriptor names match the capability names exposed by the Agentic
 Commerce plugin's UCP capability catalog. MCP tool-style capabilities are
 derived from the active UCP descriptors for ARD filtering.
 
-Pending integration work: add the concrete adapter that reads the real
-`shopware/agentic-commerce` services, sales-channel UCP config, MCP transport
-availability, and native discovery route availability.
+The bridge reads the companion plugin's `UcpConfigService` for the current
+sales channel and uses its `ShopwareVersionDetector` to avoid advertising MCP
+when the Store API MCP runtime is unavailable.
 
 ## Docker QA
 
@@ -242,6 +307,8 @@ docker compose run --rm --profile dev shell
 ```
 
 The `qa` command runs PHP syntax linting and the unit test harness through Composer scripts.
+The Docker Compose `qa` and `test` services run `composer install` first, so a
+fresh checkout does not need a pre-existing `.tools/vendor` directory.
 
 Composer dependencies are installed into `.tools/vendor`, which is ignored by
 git. The lockfile is resolved with Composer platform PHP `8.1.0` so dependency
@@ -285,3 +352,18 @@ Manual runtime checks are documented in
 
 Release gates are documented in
 [docs/release-checklist.md](docs/release-checklist.md).
+
+## Contributing and Feedback
+
+ARD is an emerging discovery layer for agent-facing resources, and this plugin
+is intended to evolve with feedback from developers, merchants, partners, and
+researchers working on agentic commerce.
+
+If you are integrating Shopware with AI agents, experimenting with ARD, or
+testing this plugin against your own storefront, please open an issue or
+discussion with questions, implementation feedback, interoperability findings,
+or suggestions for what the plugin should support next.
+
+## License
+
+MIT

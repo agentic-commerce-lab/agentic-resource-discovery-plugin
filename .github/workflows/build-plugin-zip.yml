@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: build-plugin-zip-${{ github.ref }}
@@ -36,3 +36,20 @@ jobs:
           path: dist/SwagAgenticResourceDiscovery.zip
           if-no-files-found: error
           retention-days: 14
+
+      - name: Publish latest main release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git tag --force latest-main "${{ github.sha }}"
+          git push --force origin latest-main
+
+          if gh release view latest-main >/dev/null 2>&1; then
+            gh release upload latest-main dist/SwagAgenticResourceDiscovery.zip --clobber
+          else
+            gh release create latest-main dist/SwagAgenticResourceDiscovery.zip \
+              --title "Latest main build" \
+              --notes "Automatically updated from the latest successful build on main." \
+              --prerelease
+          fi

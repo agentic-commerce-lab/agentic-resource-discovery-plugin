@@ -6,7 +6,7 @@ services:
     volumes:
       - .:/app
       - composer-cache:/tmp/composer-cache
-    command: composer qa
+    command: sh -lc "composer install --no-interaction --no-progress && composer qa"
 
   test:
     build:
@@ -15,7 +15,7 @@ services:
     volumes:
       - .:/app
       - composer-cache:/tmp/composer-cache
-    command: composer test
+    command: sh -lc "composer install --no-interaction --no-progress && composer test"
 
   shell:
     build:

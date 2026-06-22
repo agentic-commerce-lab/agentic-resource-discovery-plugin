@@ -35,7 +35,9 @@ return [
         assert_true(str_contains($services, 'CoreShopwareResourceProvider::class'), 'Expected core provider service registration.');
         assert_true(str_contains($services, 'StaticConfigResourceProvider::class'), 'Expected static provider service registration.');
         assert_true(str_contains($services, 'AgenticCommerceResourceProvider::class'), 'Expected Agentic Commerce provider service registration.');
-        assert_true(str_contains($services, 'NullAgenticCommerceBridge::class'), 'Expected null bridge fallback registration.');
+        assert_true(str_contains($services, 'ShopwareAgenticCommerceBridge::class'), 'Expected concrete Agentic Commerce bridge registration.');
+        assert_true(str_contains($services, 'Swag\\\\AgenticCommerce\\\\Ucp\\\\Config\\\\UcpConfigService'), 'Expected optional UCP config service reference.');
+        assert_true(str_contains($services, 'nullOnInvalid()'), 'Expected optional Agentic Commerce service references.');
         assert_true(str_contains($services, 'swag_agentic_resource_discovery.catalog_entry_provider'), 'Expected catalog provider tag.');
         assert_true(str_contains($services, 'RegistryController::class'), 'Expected registry controller service registration.');
         assert_true(str_contains($services, 'controller.service_arguments'), 'Expected controller service arguments tag.');

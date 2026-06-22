@@ -227,7 +227,7 @@
 
 - [x] Implement `StaticConfigResourceProvider`.
 - [x] Read `staticEntriesJson` from the active `ArdConfig`.
-- [ ] Add the Shopware `SystemConfigService` adapter that hydrates `ArdConfig::staticEntriesJson` from plugin system config.
+- [x] Add the Shopware `SystemConfigService` adapter that hydrates `ArdConfig::staticEntriesJson` from plugin system config.
 - [x] Accept either:
 
 ```json
@@ -277,7 +277,7 @@ or:
 **Outcome:** When `shopware/agentic-commerce` is installed and active, ARD exposes its relevant discovery and execution surfaces as catalog entries.
 
 - [x] Register `AgenticCommerceResourceProvider` with a null bridge fallback so the plugin boots when Agentic Commerce is absent.
-- [ ] Add the concrete Shopware Agentic Commerce bridge and register it only when Agentic Commerce classes/services exist.
+- [x] Add the concrete Shopware Agentic Commerce bridge and register it only when Agentic Commerce classes/services exist.
 - [x] Avoid compile-time hard dependency in the ARD provider by depending only on `AgenticCommerceBridgeInterface`.
 - [x] Generate a UCP profile entry when UCP is active for the sales channel:
 

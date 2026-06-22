@@ -10,6 +10,7 @@ return [
         assert_true(str_contains($script, 'SwagAgenticResourceDiscovery.zip'), 'Expected stable plugin zip name.');
         assert_true(str_contains($script, 'cp -R src'), 'Expected source directory packaging.');
         assert_true(str_contains($script, 'cp composer.json'), 'Expected composer metadata packaging.');
+        assert_true(str_contains($script, 'cp LICENSE'), 'Expected license packaging.');
         assert_true(str_contains($script, '--exclude=.github/*'), 'Expected GitHub workflow exclusion.');
         assert_true(str_contains($script, '--exclude=SwagAgenticResourceDiscovery/.github/*'), 'Expected prefixed GitHub workflow exclusion.');
         assert_true(str_contains($script, '--exclude=tests/*'), 'Expected tests exclusion.');
