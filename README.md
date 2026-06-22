@@ -2,8 +2,8 @@
 
 This repository contains a Shopware 6 plugin for Agentic Resource Discovery (ARD).
 
-ARD lets clients discover agent-facing resources, registries, and protocol
-surfaces. 
+ARD is a new discovery standard that lets AI Agents discover agent-facing resources, registries, and protocol
+surfaces a website exposes. 
 
 In Agentic Commerce, buyers increasingly delegate shopping, comparison,
 procurement, replenishment, and checkout tasks to AI agents. Those agents need a
