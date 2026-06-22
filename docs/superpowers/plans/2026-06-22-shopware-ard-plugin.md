@@ -276,9 +276,10 @@ or:
 
 **Outcome:** When `shopware/agentic-commerce` is installed and active, ARD exposes its relevant discovery and execution surfaces as catalog entries.
 
-- [ ] Register `AgenticCommerceResourceProvider` only if Agentic Commerce classes/services exist.
-- [ ] Avoid compile-time hard dependency by checking `class_exists('Swag\\AgenticCommerce\\SwagAgenticCommerce')` and container definitions before registering the provider.
-- [ ] Generate a UCP profile entry when UCP is active for the sales channel:
+- [x] Register `AgenticCommerceResourceProvider` with a null bridge fallback so the plugin boots when Agentic Commerce is absent.
+- [ ] Add the concrete Shopware Agentic Commerce bridge and register it only when Agentic Commerce classes/services exist.
+- [x] Avoid compile-time hard dependency in the ARD provider by depending only on `AgenticCommerceBridgeInterface`.
+- [x] Generate a UCP profile entry when UCP is active for the sales channel:
 
 ```json
 {
@@ -306,7 +307,7 @@ or:
 }
 ```
 
-- [ ] Generate an MCP entry when Agentic Commerce reports MCP transport available:
+- [x] Generate an MCP entry when Agentic Commerce reports MCP transport available:
 
 ```json
 {
@@ -332,12 +333,12 @@ or:
 }
 ```
 
-- [ ] Generate native discovery document entries when routes are available:
+- [x] Generate native discovery document entries when routes are available:
   - `/agents.md` as `text/markdown`
   - `/llms.txt` as `text/plain`
-- [ ] Derive capabilities from `UcpCapabilityCatalog` where possible rather than duplicating enabled UCP config names.
-- [ ] Never advertise an Agentic Commerce endpoint if its sales-channel config is inactive.
-- [ ] Add unit tests with fake bridge services for:
+- [x] Derive advertised capabilities from bridge-provided UCP descriptor names, matching `UcpCapabilityCatalog` descriptors.
+- [x] Never advertise an Agentic Commerce endpoint if its sales-channel config is inactive.
+- [x] Add unit tests with fake bridge services for:
   - Agentic Commerce absent: no bridge provider registered, plugin still boots.
   - UCP active without MCP: UCP profile entry only.
   - UCP active with MCP: UCP profile and MCP entries.

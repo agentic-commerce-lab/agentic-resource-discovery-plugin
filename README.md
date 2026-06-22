@@ -134,6 +134,40 @@ Invalid static entries are omitted from the public catalog. The provider records
 a warning with the invalid entry index and continues rendering the remaining
 valid entries.
 
+## Agentic Commerce Bridge
+
+The plugin has a soft bridge for `shopware/agentic-commerce`. The ARD catalog
+provider depends on an internal `AgenticCommerceBridgeInterface`, so this plugin
+does not require the Agentic Commerce plugin at compile time.
+
+Current behavior:
+
+- When Agentic Commerce is absent, a null bridge returns no Agentic Commerce
+  entries and the ARD plugin still boots.
+- When a bridge reports UCP active, the catalog advertises
+  `/.well-known/ucp` as a `Shopware UCP Profile` entry.
+- When a bridge reports MCP available, the catalog advertises `/ucp/mcp` as a
+  `Shopware UCP MCP` entry.
+- When a bridge reports native discovery routes available, the catalog
+  advertises `/agents.md` and `/llms.txt`.
+- When UCP is inactive, no Agentic Commerce UCP/MCP/native discovery entries are
+  advertised.
+
+The bridge uses UCP descriptor names such as:
+
+- `dev.ucp.shopping.catalog`
+- `dev.ucp.shopping.cart`
+- `dev.ucp.shopping.checkout`
+- `dev.ucp.shopping.order`
+
+Those descriptor names match the capability names exposed by the Agentic
+Commerce plugin's UCP capability catalog. MCP tool-style capabilities are
+derived from the active UCP descriptors for ARD filtering.
+
+Pending integration work: add the concrete adapter that reads the real
+`shopware/agentic-commerce` services, sales-channel UCP config, MCP transport
+availability, and native discovery route availability.
+
 ## Docker QA
 
 The local workflow does not require PHP or Composer on the host. Use Docker Compose:
