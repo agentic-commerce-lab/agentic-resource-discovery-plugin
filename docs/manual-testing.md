@@ -109,6 +109,18 @@ GET /ard/agents
 
 Expected: each endpoint returns HTTP `404`.
 
+## Troubleshooting
+
+If Shopware shows `InvalidRouteScopeException` or HTTP `412 Precondition Failed`
+for an ARD route, clear the cache after updating the plugin:
+
+```bash
+bin/console cache:clear
+```
+
+The ARD routes must be registered in the `storefront` route scope with
+`auth_required=false`.
+
 ## Agentic Commerce Bridge Check
 
 With `shopware/agentic-commerce` installed and UCP enabled for the sales

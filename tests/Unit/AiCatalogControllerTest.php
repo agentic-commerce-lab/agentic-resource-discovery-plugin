@@ -8,6 +8,7 @@ use Swag\AgenticResourceDiscovery\Ard\Catalog\CoreShopwareResourceProvider;
 use Swag\AgenticResourceDiscovery\Ard\Config\ArdConfig;
 use Swag\AgenticResourceDiscovery\Ard\Config\InMemoryArdConfigProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 return [
@@ -20,7 +21,7 @@ return [
             )),
         );
 
-        $response = $controller->catalog('https://example.com', null);
+        $response = $controller->catalog(Request::create('/.well-known/ai-catalog.json', 'GET', [], [], [], ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on']));
         $payload = json_decode((string) $response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
 
         assert_true($response instanceof JsonResponse, 'Expected a Symfony JsonResponse.');
@@ -42,10 +43,18 @@ return [
             )),
         );
 
-        $response = $controller->catalog('https://example.com', null);
+        $response = $controller->catalog(Request::create('/.well-known/ai-catalog.json', 'GET', [], [], [], ['HTTP_HOST' => 'example.com', 'HTTPS' => 'on']));
 
         assert_true($response instanceof Response, 'Expected a Symfony Response.');
         assert_same(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         assert_same('', (string) $response->getContent());
+    },
+
+    'catalog route declares storefront scope and public access' => static function (): void {
+        $controller = file_get_contents(__DIR__.'/../../src/Ard/Api/AiCatalogController.php');
+
+        assert_true(false !== $controller, 'Expected controller source to be readable.');
+        assert_true(str_contains($controller, "'_routeScope' => ['storefront']"), 'Expected storefront route scope.');
+        assert_true(str_contains($controller, "'auth_required' => false"), 'Expected public route.');
     },
 ];

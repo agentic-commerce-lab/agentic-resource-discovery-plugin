@@ -96,4 +96,12 @@ return [
 
         assert_same(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     },
+
+    'registry routes declare storefront scope and public access' => static function (): void {
+        $controller = file_get_contents(__DIR__.'/../../src/Ard/Api/RegistryController.php');
+
+        assert_true(false !== $controller, 'Expected controller source to be readable.');
+        assert_same(3, substr_count($controller, "'_routeScope' => ['storefront']"));
+        assert_same(3, substr_count($controller, "'auth_required' => false"));
+    },
 ];

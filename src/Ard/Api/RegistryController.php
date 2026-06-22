@@ -25,7 +25,12 @@ final class RegistryController
     ) {
     }
 
-    #[Route(path: '/ard/search', name: 'swag_agentic_resource_discovery.search', methods: ['POST'])]
+    #[Route(
+        path: '/ard/search',
+        name: 'swag_agentic_resource_discovery.search',
+        defaults: ['_routeScope' => ['storefront'], 'auth_required' => false],
+        methods: ['POST'],
+    )]
     public function search(Request $request, mixed $salesChannelContext = null): Response
     {
         $config = $this->configProvider->getConfig($salesChannelContext);
@@ -49,7 +54,12 @@ final class RegistryController
         ));
     }
 
-    #[Route(path: '/ard/explore', name: 'swag_agentic_resource_discovery.explore', methods: ['POST'])]
+    #[Route(
+        path: '/ard/explore',
+        name: 'swag_agentic_resource_discovery.explore',
+        defaults: ['_routeScope' => ['storefront'], 'auth_required' => false],
+        methods: ['POST'],
+    )]
     public function explore(Request $request, mixed $salesChannelContext = null): Response
     {
         $config = $this->configProvider->getConfig($salesChannelContext);
@@ -69,7 +79,12 @@ final class RegistryController
         ));
     }
 
-    #[Route(path: '/ard/agents', name: 'swag_agentic_resource_discovery.agents', methods: ['GET'])]
+    #[Route(
+        path: '/ard/agents',
+        name: 'swag_agentic_resource_discovery.agents',
+        defaults: ['_routeScope' => ['storefront'], 'auth_required' => false],
+        methods: ['GET'],
+    )]
     public function agents(Request $request, mixed $salesChannelContext = null): Response
     {
         $config = $this->configProvider->getConfig($salesChannelContext);
