@@ -15,6 +15,7 @@ use Swag\AgenticResourceDiscovery\Ard\Config\InMemoryArdConfigProvider;
 use Swag\AgenticResourceDiscovery\Ard\Catalog\StaticConfigResourceProvider;
 use Swag\AgenticResourceDiscovery\Ard\Log\NullStaticEntryWarningLogger;
 use Swag\AgenticResourceDiscovery\Ard\Log\StaticEntryWarningLoggerInterface;
+use Swag\AgenticResourceDiscovery\Subscriber\AiCatalogResponseSubscriber;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -39,6 +40,10 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(AgenticCommerceResourceProvider::class)
         ->tag('swag_agentic_resource_discovery.catalog_entry_provider');
+
+    $services
+        ->set(AiCatalogResponseSubscriber::class)
+        ->tag('kernel.event_subscriber');
 
     $services->alias(AgenticCommerceBridgeInterface::class, NullAgenticCommerceBridge::class);
 

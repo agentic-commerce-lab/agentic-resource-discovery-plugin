@@ -22,7 +22,11 @@ final class AiCatalogController
     #[Route(
         path: '/.well-known/ai-catalog.json',
         name: 'swag_agentic_resource_discovery.ai_catalog',
-        defaults: ['_routeScope' => ['storefront'], 'auth_required' => false],
+        defaults: [
+            '_routeScope' => ['storefront'],
+            'auth_required' => false,
+            '_httpCache' => true,
+            ],
         methods: ['GET'],
     )]
     public function catalog(Request $request, mixed $salesChannelContext = null): Response
@@ -36,9 +40,8 @@ final class AiCatalogController
         $manifest = $this->catalogBuilder->build($request->getSchemeAndHttpHost(), $salesChannelContext, $config);
 
         $response = new JsonResponse($manifest->toArray(), Response::HTTP_OK);
-        $response->headers->set('cache-control', 'public, max-age=300');
-        $response->headers->set('Content-Type', 'application/json');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        // headers set in src/Ard/Subscribers/AiCatalogResponseSubscriber.php to prevent overwriting
 
         return $response;
     }
