@@ -56,6 +56,42 @@ Build the same zip locally:
 docker compose run --rm qa bin/build-zip.sh
 ```
 
+## Instructions
+
+After installation, enable the plugin in Shopware Admin and configure it under
+the plugin settings. For most shops the defaults are enough to publish a basic
+ARD catalog.
+
+Open `https://shop.example/.well-known/ai-catalog.json` in a browser, replacing
+`shop.example` with your storefront domain. This is the public entry point for
+AI agents. It advertises the Shopware ARD registry and the resources agents can
+discover for the storefront.
+
+To add your own resources, paste JSON into the `staticEntriesJson` plugin
+configuration field. Use this when you want ARD to advertise an OpenAPI file,
+MCP server card, documentation endpoint, or another agent-facing resource that
+is not provided by this plugin automatically.
+
+To use this plugin with `shopware/agentic-commerce`:
+
+1. Install and activate both plugins.
+2. Configure Agentic Commerce UCP for the storefront sales channel.
+3. Enable UCP in the Agentic Commerce configuration.
+4. Clear the Shopware cache.
+5. Open `/.well-known/ai-catalog.json` on the same storefront domain.
+
+When Agentic Commerce UCP is active, the ARD catalog should include additional
+entries such as `Shopware UCP Profile`, `Shopware Agentic Discovery Guide`, and
+`Shopware LLM Instructions`. If Agentic Commerce MCP is enabled and the
+Shopware runtime supports Store API MCP, the catalog also includes
+`Shopware UCP MCP`.
+
+If those entries do not appear, confirm that both plugins are active, UCP is
+enabled for the same sales channel, and you are opening the catalog on the same
+storefront domain where Agentic Commerce is configured. The ARD plugin only
+advertises Agentic Commerce resources when Agentic Commerce itself is active for
+that storefront.
+
 ## Configuration Keys
 
 The plugin configuration currently defines these keys:

@@ -30,6 +30,10 @@ return [
 
         assert_true(false !== $readme, 'Expected README.md to be readable.');
         assert_true(str_contains($readme, '## Installation'), 'Expected installation section.');
+        assert_true(str_contains($readme, '## Instructions'), 'Expected instructions section.');
+        assert_true(str_contains($readme, 'shopware/agentic-commerce'), 'Expected Agentic Commerce usage instructions.');
+        assert_true(str_contains($readme, 'both plugins are active'), 'Expected user-facing Agentic Commerce troubleshooting instructions.');
+        assert_true(str_contains($readme, 'same sales channel'), 'Expected sales channel troubleshooting guidance.');
         assert_true(str_contains($readme, '## Configuration Keys'), 'Expected configuration section.');
         assert_true(str_contains($readme, 'releases/tag/latest-main'), 'Expected latest main release link.');
         assert_true(str_contains($readme, 'docs/manual-testing.md'), 'Expected manual testing link.');
