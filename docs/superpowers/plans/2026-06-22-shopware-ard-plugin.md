@@ -225,9 +225,10 @@
 
 **Outcome:** A merchant or implementation engineer can publish additional ARD entries without code changes.
 
-- [ ] Implement `StaticConfigResourceProvider`.
-- [ ] Read `staticEntriesJson` from system config.
-- [ ] Accept either:
+- [x] Implement `StaticConfigResourceProvider`.
+- [x] Read `staticEntriesJson` from the active `ArdConfig`.
+- [ ] Add the Shopware `SystemConfigService` adapter that hydrates `ArdConfig::staticEntriesJson` from plugin system config.
+- [x] Accept either:
 
 ```json
 [
@@ -260,16 +261,16 @@ or:
 }
 ```
 
-- [ ] Validate each static entry:
+- [x] Validate each static entry:
   - required fields exist.
   - exactly one of `url` or `data`.
   - identifier matches `^urn:air:[a-zA-Z0-9.-]+(:[a-zA-Z0-9._-]+)+$`.
   - `representativeQueries`, if present, contains 2-5 strings.
-- [ ] On invalid config:
+- [x] On invalid config:
   - log a warning with the invalid entry index.
   - omit invalid entries from public output.
   - do not break the catalog endpoint.
-- [ ] Add unit tests for valid array shape, valid manifest shape, invalid entry omission, and warning behavior.
+- [x] Add unit tests for valid array shape, valid manifest shape, invalid entry omission, and warning behavior.
 
 ## Epic 5: Optional Agentic Commerce Bridge
 

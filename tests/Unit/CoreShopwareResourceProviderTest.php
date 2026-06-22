@@ -33,6 +33,7 @@ return [
 
         assert_true(false !== $services, 'Expected services.php to be readable.');
         assert_true(str_contains($services, 'CoreShopwareResourceProvider::class'), 'Expected core provider service registration.');
+        assert_true(str_contains($services, 'StaticConfigResourceProvider::class'), 'Expected static provider service registration.');
         assert_true(str_contains($services, 'swag_agentic_resource_discovery.catalog_entry_provider'), 'Expected catalog provider tag.');
         assert_true(str_contains($services, 'RegistryController::class'), 'Expected registry controller service registration.');
         assert_true(str_contains($services, 'controller.service_arguments'), 'Expected controller service arguments tag.');

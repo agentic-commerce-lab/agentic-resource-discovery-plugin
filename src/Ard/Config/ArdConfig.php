@@ -14,6 +14,7 @@ final class ArdConfig
         public readonly string $hostDisplayName,
         public readonly ?string $documentationUrl = null,
         public readonly array $referrals = [],
+        public readonly ?string $staticEntriesJson = null,
     ) {
     }
 }

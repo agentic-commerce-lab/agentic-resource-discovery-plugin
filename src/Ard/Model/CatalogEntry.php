@@ -11,7 +11,8 @@ final class CatalogEntry
      * @param list<string> $capabilities
      * @param list<string> $representativeQueries
      * @param array<string, mixed>|null $data
-     * @param array<string, string|int|float|bool|null> $metadata
+     * @param array<string, mixed> $metadata
+     * @param array<string, mixed> $trustManifest
      */
     public function __construct(
         private readonly string $identifier,
@@ -26,6 +27,7 @@ final class CatalogEntry
         private readonly ?string $version = null,
         private readonly ?string $updatedAt = null,
         private readonly array $metadata = [],
+        private readonly array $trustManifest = [],
     ) {
         if ((null === $this->url) === (null === $this->data)) {
             throw new \InvalidArgumentException('Catalog entries must contain exactly one of url or data.');
@@ -59,6 +61,7 @@ final class CatalogEntry
             'version' => $this->version,
             'updatedAt' => $this->updatedAt,
             'metadata' => $this->metadata,
+            'trustManifest' => $this->trustManifest,
         ] as $key => $value) {
             if (null === $value || [] === $value) {
                 continue;

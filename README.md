@@ -81,6 +81,59 @@ MVP limitations:
   not the full optional EBNF-style list filter.
 - Official ARD conformance tests are planned for the conformance epic.
 
+## Static Catalog Entries
+
+Static entries let a merchant or implementation engineer publish additional ARD
+resources without writing a new catalog provider. The current provider reads
+`staticEntriesJson` from the active `ArdConfig`; wiring that value to Shopware's
+`SystemConfigService` is still pending.
+
+Accepted JSON shape: an array of entries:
+
+```json
+[
+  {
+    "identifier": "urn:air:example.com:shopware:custom-api",
+    "displayName": "Custom Product Advice API",
+    "type": "application/openapi+json",
+    "url": "https://example.com/openapi.json",
+    "description": "Product advice API for agents.",
+    "representativeQueries": [
+      "get product advice",
+      "find compatible products"
+    ]
+  }
+]
+```
+
+Accepted JSON shape: a manifest-like object with `entries`:
+
+```json
+{
+  "entries": [
+    {
+      "identifier": "urn:air:example.com:shopware:custom-api",
+      "displayName": "Custom Product Advice API",
+      "type": "application/openapi+json",
+      "url": "https://example.com/openapi.json"
+    }
+  ]
+}
+```
+
+Validation rules:
+
+- `identifier`, `displayName`, and `type` must be non-empty strings.
+- `identifier` must match `urn:air:<publisher>:<namespace>:<agent-name>`.
+- exactly one of `url` or `data` must be present.
+- `url`, when present, must be an absolute URL.
+- `data`, when present, must be a JSON object.
+- `representativeQueries`, when present, must contain 2 to 5 non-empty strings.
+
+Invalid static entries are omitted from the public catalog. The provider records
+a warning with the invalid entry index and continues rendering the remaining
+valid entries.
+
 ## Docker QA
 
 The local workflow does not require PHP or Composer on the host. Use Docker Compose:

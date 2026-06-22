@@ -21,7 +21,7 @@ final class AiCatalogBuilder
         $entries = [];
 
         foreach ($this->entryProviders as $provider) {
-            foreach ($provider->getEntries($baseUrl, $salesChannelContext) as $entry) {
+            foreach ($provider->getEntries($baseUrl, $salesChannelContext, $config) as $entry) {
                 $entries[] = $entry;
             }
         }
