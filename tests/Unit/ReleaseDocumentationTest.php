@@ -32,7 +32,6 @@ return [
         assert_true(str_contains($readme, '## Installation'), 'Expected installation section.');
         assert_true(str_contains($readme, '## Configuration Keys'), 'Expected configuration section.');
         assert_true(str_contains($readme, 'releases/tag/latest-main'), 'Expected latest main release link.');
-        assert_true(str_contains($readme, 'actions/workflows/build-plugin-zip.yml'), 'Expected build workflow link.');
         assert_true(str_contains($readme, 'docs/manual-testing.md'), 'Expected manual testing link.');
         assert_true(str_contains($readme, 'docs/release-checklist.md'), 'Expected release checklist link.');
     },

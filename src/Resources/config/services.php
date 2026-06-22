@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Swag\AgenticResourceDiscovery\Ard\AgenticCommerce\AgenticCommerceBridgeInterface;
-use Swag\AgenticResourceDiscovery\Ard\AgenticCommerce\NullAgenticCommerceBridge;
+use Swag\AgenticResourceDiscovery\Ard\AgenticCommerce\ShopwareAgenticCommerceBridge;
 use Swag\AgenticResourceDiscovery\Ard\Catalog\CoreShopwareResourceProvider;
 use Swag\AgenticResourceDiscovery\Ard\Catalog\AgenticCommerceResourceProvider;
 use Swag\AgenticResourceDiscovery\Ard\Catalog\AiCatalogBuilder;
@@ -40,7 +40,11 @@ return static function (ContainerConfigurator $container): void {
     $services->set(AgenticCommerceResourceProvider::class)
         ->tag('swag_agentic_resource_discovery.catalog_entry_provider');
 
-    $services->alias(AgenticCommerceBridgeInterface::class, NullAgenticCommerceBridge::class);
+    $services->alias(AgenticCommerceBridgeInterface::class, ShopwareAgenticCommerceBridge::class);
+
+    $services->set(ShopwareAgenticCommerceBridge::class)
+        ->arg('$ucpConfigService', service('Swag\\AgenticCommerce\\Ucp\\Config\\UcpConfigService')->nullOnInvalid())
+        ->arg('$shopwareVersionDetector', service('Swag\\AgenticCommerce\\Compatibility\\ShopwareVersionDetector')->nullOnInvalid());
 
     $services->alias(StaticEntryWarningLoggerInterface::class, NullStaticEntryWarningLogger::class);
 

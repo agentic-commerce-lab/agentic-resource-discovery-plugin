@@ -25,10 +25,9 @@ Shopware's regular plugin installation flow.
 
 Pushes to `main` run the `Build Plugin Zip` GitHub Actions workflow. The
 workflow runs Docker QA, builds `dist/SwagAgenticResourceDiscovery.zip`, and
-publishes it in two places:
+publishes it to the latest main release:
 
-- Latest main release: https://github.com/agentic-commerce-lab/agentic-resource-discovery-plugin/releases/tag/latest-main
-- Workflow artifact: https://github.com/agentic-commerce-lab/agentic-resource-discovery-plugin/actions/workflows/build-plugin-zip.yml
+https://github.com/agentic-commerce-lab/agentic-resource-discovery-plugin/releases/tag/latest-main
 
 The `latest-main` release is updated after every successful push build on
 `main`, so it is the easiest place to download the current installable zip.
@@ -232,14 +231,16 @@ does not require the Agentic Commerce plugin at compile time.
 
 Current behavior:
 
-- When Agentic Commerce is absent, a null bridge returns no Agentic Commerce
-  entries and the ARD plugin still boots.
-- When a bridge reports UCP active, the catalog advertises
+- When Agentic Commerce is absent, optional service references resolve to
+  `null`, no Agentic Commerce entries are emitted, and the ARD plugin still
+  boots.
+- When Agentic Commerce is installed and UCP is active for the current sales
+  channel, the catalog advertises
   `/.well-known/ucp` as a `Shopware UCP Profile` entry.
-- When a bridge reports MCP available, the catalog advertises `/ucp/mcp` as a
-  `Shopware UCP MCP` entry.
-- When a bridge reports native discovery routes available, the catalog
-  advertises `/agents.md` and `/llms.txt`.
+- When Agentic Commerce config enables MCP and the Shopware runtime supports
+  Store API MCP, the catalog advertises `/ucp/mcp` as a `Shopware UCP MCP`
+  entry.
+- When UCP is active, the catalog advertises `/agents.md` and `/llms.txt`.
 - When UCP is inactive, no Agentic Commerce UCP/MCP/native discovery entries are
   advertised.
 
@@ -254,9 +255,9 @@ Those descriptor names match the capability names exposed by the Agentic
 Commerce plugin's UCP capability catalog. MCP tool-style capabilities are
 derived from the active UCP descriptors for ARD filtering.
 
-Pending integration work: add the concrete adapter that reads the real
-`shopware/agentic-commerce` services, sales-channel UCP config, MCP transport
-availability, and native discovery route availability.
+The bridge reads the companion plugin's `UcpConfigService` for the current
+sales channel and uses its `ShopwareVersionDetector` to avoid advertising MCP
+when the Store API MCP runtime is unavailable.
 
 ## Docker QA
 
