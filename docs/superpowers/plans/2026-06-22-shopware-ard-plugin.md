@@ -158,26 +158,26 @@
 
 **Outcome:** Crawlers can discover a schema-valid AI catalog manifest for each storefront domain.
 
-- [ ] Implement `CatalogEntry` with `toArray()` that omits null/empty optional fields.
-- [ ] Implement `AiCatalogManifest` with:
+- [x] Implement `CatalogEntry` with `toArray()` that omits null/empty optional fields.
+- [x] Implement `AiCatalogManifest` with:
   - `specVersion: "1.0"`
   - `host.displayName`
   - optional `host.documentationUrl`
   - `entries`
-- [ ] Implement `AiCatalogBuilder` that receives the active request base URL and sales channel context.
-- [ ] Implement `AiCatalogController`:
+- [x] Implement `AiCatalogBuilder` that receives the active request base URL and sales channel context.
+- [x] Implement `AiCatalogController`:
   - route: `GET /.well-known/ai-catalog.json`
   - scopes: storefront route scope
   - auth: false
   - response content type: `application/json`
   - cache headers: `public, max-age=300`
-- [ ] Implement config disable behavior:
+- [x] Implement config disable behavior:
   - if `enabled=false`, return `404` from all public ARD endpoints.
-- [ ] Add integration tests for:
+- [x] Add lightweight controller/model tests for:
   - enabled catalog returns `200`.
   - disabled catalog returns `404`.
   - manifest contains `specVersion`, `host`, and at least the registry self-entry.
-  - JSON validates against `spec/schemas/ai-catalog.schema.json`.
+- [ ] Add schema validation against `spec/schemas/ai-catalog.schema.json` once the ARD conformance assets are vendored or downloaded in Epic 6.
 
 ## Epic 3: Dynamic Registry MVP
 

@@ -3,6 +3,11 @@
 declare(strict_types=1);
 
 spl_autoload_register(static function (string $class): void {
+    $composerAutoload = __DIR__.'/../.tools/vendor/autoload.php';
+    if (is_file($composerAutoload)) {
+        require_once $composerAutoload;
+    }
+
     $prefix = 'Swag\\AgenticResourceDiscovery\\';
     if (!str_starts_with($class, $prefix)) {
         return;
