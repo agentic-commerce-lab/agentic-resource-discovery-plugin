@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Swag\AgenticResourceDiscovery\Subscriber;
+namespace Swag\Ard\AgenticResourceDiscovery\Subscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -29,6 +29,5 @@ final class AiCatalogResponseSubscriber implements EventSubscriberInterface
 
         $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set('Content-Type', 'application/json');
-        // $response->headers->set('Cache-Control', 'public, max-age=300');
     }
 }

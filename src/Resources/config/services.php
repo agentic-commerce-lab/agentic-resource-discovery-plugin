@@ -14,7 +14,7 @@ use Swag\AgenticResourceDiscovery\Ard\Config\SystemConfigArdConfigProvider;
 use Swag\AgenticResourceDiscovery\Ard\Catalog\StaticConfigResourceProvider;
 use Swag\AgenticResourceDiscovery\Ard\Log\NullStaticEntryWarningLogger;
 use Swag\AgenticResourceDiscovery\Ard\Log\StaticEntryWarningLoggerInterface;
-use Swag\AgenticResourceDiscovery\Subscriber\AiCatalogResponseSubscriber;
+use Swag\AgenticResourceDiscovery\Ard\Subscriber\AiCatalogResponseSubscriber;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
