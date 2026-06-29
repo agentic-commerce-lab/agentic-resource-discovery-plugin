@@ -1,6 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Swag\Ard\AgenticResourceDiscovery\Subscriber;
+declare(strict_types=1);
+
+namespace Swag\AgenticResourceDiscovery\Ard\Subscribers;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
