@@ -1,6 +1,6 @@
-# Agentic Resource Discovery for Shopware
+# ARD (Agentic Resource Discovery) plugin for Shopware
 
-This repository contains a Shopware 6 plugin for Agentic Resource Discovery (ARD).
+This repository contains a research preview of a Shopware 6 plugin for Agentic Resource Discovery (ARD).
 
 ARD is a new discovery standard that lets AI Agents discover agent-facing resources, registries, and protocol
 surfaces a website exposes. 
